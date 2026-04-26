@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeMeds - Drug Interaction Predictor</title>
+
+    <!-- AppVila CSS Files -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/glightbox.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/linecons.2.0.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tiny-slider.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+
+.hero-area{
+background-image: url("{{ url_for('static', filename='images/image6.jpeg') }}");
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+padding:120px 0;
+}
+
+</style>
+
+</head>
+
+<body>
+
+    <!-- AppVila Navbar -->
+    <header class="header navbar-area">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light">
+
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <strong>SafeMeds</strong>
+            </a>
+
+            <!-- Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto">
+
+                    {% if current_user.is_authenticated %}
+
+                        {% if current_user.role == "admin" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
+                                Admin Dashboard
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        <li class="nav-item">
+                            <span class="nav-link">
+                                {{ current_user.username }}
+                            </span>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-danger" href="{{ url_for('logout') }}">
+                                Logout
+                            </a>
+                        </li>
+
+                    {% else %}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">
+                                Login
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('register') }}">
+                                Register
+                            </a>
+                        </li>
+
+                    {% endif %}
+
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+
+    <!-- Page Content -->
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="footer section">
+        <div class="container text-center">
+            <p></p>
+        </div>
+    </footer>
+
+    <!-- AppVila JS Files -->
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/glightbox.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tiny-slider.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="py-5 bg-light"></section>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-10"></div>
+
+```
+            <div class="card result-card shadow-lg border-0 p-5 text-center"></div>
+
+                <h2 class="mb-4 text-primary">
+                    🧪 Drug Interaction Result
+                </h2>
+
+                <p class="fs-5">
+                    <strong>Drug 1:</strong> {{ drug1 }}
+                </p>
+
+                <p class="fs-5">
+                    <strong>Drug 2:</strong> {{ drug2 }}
+                </p>
+
+                <!-- Risk Result Card -->
+
+<div class="mt-4">
+
+<div class="alert 
+{% if risk == 'High Risk' %}
+alert-danger
+{% elif risk == 'Moderate Risk' %}
+alert-warning
+{% else %}
+alert-success
+{% endif %}
+text-center">
+
+<h3 class="mb-2">
+🚨 Risk Level: <strong>{{ risk }}</strong>
+</h3>
+
+<p class="mb-2">
+Prediction Confidence: 
+<strong>{{ (probability * 100) | round(2) }}%</strong>
+</p>
+
+<div class="progress mt-3">
+
+<div class="progress-bar 
+{% if risk == 'High Risk' %}
+bg-danger
+{% elif risk == 'Moderate Risk' %}
+bg-warning
+{% else %}
+bg-success
+{% endif %}"
+
+style="width: {{ probability * 100 }}%;">
+
+{{ (probability * 100) | round(1) }}%
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+                
+
+                <!-- Deep Learning LSTM Prediction -->
+                <div class="mt-4">
+                    <h5 class="text-info">🧠 Deep Learning Model (LSTM)</h5>
+                    <p>
+                        LSTM Prediction Score: 
+                        <strong>{{ lstm_probability }}</strong>
+                    </p>
+
+                    <div class="progress" style="height:20px;">
+                        <div class="progress-bar bg-info"
+                             role="progressbar"
+                             style="width: {{ lstm_probability * 100 }}%;">
+                            {{ (lstm_probability * 100) | round(2) }}%
+                        </div>
+                    </div>
+
+                    <p class="text-muted mt-2" style="font-size:14px;">
+                        This value is predicted by the LSTM deep learning model which learns
+                        hidden patterns between drug combinations.
+                    </p>
+                </div>
+
+                <!-- SHAP Explainable AI Section -->
+                <div class="mt-5 text-start">
+
+<h4 class="text-secondary mb-3">🔍 Explainable AI Analysis</h4>
+
+<div class="card shadow-sm border-0">
+
+<table class="table table-hover mb-0">
+
+<thead class="table-light">
+<tr>
+<th>Feature</th>
+<th>Effect</th>
+<th>Impact Score</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for feature, value in explanation %}
+
+<tr>
+
+<td>{{ feature }}</td>
+
+<td>
+{% if value > 0 %}
+<span class="badge bg-danger">Increased Risk</span>
+{% else %}
+<span class="badge bg-success">Reduced Risk</span>
+{% endif %}
+</td>
+
+<td>{{ value | round(4) }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+<p class="text-muted mt-2" style="font-size:14px;">
+SHAP values explain how each feature contributed to the AI prediction.
+</p>
+
+</div>
+
+                <a href="/" class="btn btn-primary mt-4">
+                    🔁 Check Another Combination
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+```
+
+</section>
+<style>
+
+body{
+background-image: url("{{ url_for('static', filename='images/image1.jpeg') }}");
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+background-repeat: no-repeat;
+}
+
+</style>
+
+<style>
+
+/* Background image */
+body{
+background-image: url("{{ url_for('static', filename='images/image1.jpeg') }}");
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+background-attachment: fixed;
+}
+
+/* Glass dashboard card */
+.result-card{
+background: rgba(255,255,255,0.75);
+backdrop-filter: blur(12px);
+border-radius:15px;
+}
+
+/* Slight shadow improvement */
+.card{
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+}
+
+</style>
+{% endblock %}

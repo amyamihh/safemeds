@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-area">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <div class="col-lg-6 col-md-12">
+                <div class="hero-content">
+                    <h1 class="wow fadeInLeft" data-wow-delay=".4s">
+                        SafeMeds AI
+                    </h1>
+                    <p class="wow fadeInLeft" data-wow-delay=".6s">
+                        AI-Based Drug Interaction Risk Predictor.
+                        Enter two drug names below to check potential interaction risk.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-12">
+                <div class="hero-image">
+
+                    <!-- Your Form Styled with AppVila -->
+                    <div class="card shadow-lg p-4">
+                        <h4 class="text-center mb-4 text-primary">
+                            Drug Interaction Risk Checker
+                        </h4>
+
+                        <form method="POST" action="/predict">
+
+                            <div class="mb-3">
+                                <label class="form-label">First Drug Name</label>
+                                <input type="text" name="drug1" 
+                                       class="form-control" 
+                                       placeholder="e.g. Aspirin" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Second Drug Name</label>
+                                <input type="text" name="drug2" 
+                                       class="form-control" 
+                                       placeholder="e.g. Warfarin" required>
+                            </div>
+                           <div class="mb-3">
+    <label class="form-label">Dosage (mg)</label>
+    <input type="number" name="dosage"
+           class="form-control"
+           placeholder="e.g. 500" required>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Age</label>
+    <input type="number" name="age"
+           class="form-control"
+           placeholder="e.g. 25" required>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Gender</label>
+    <select name="gender" class="form-control">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+    </select>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Existing Disease (Optional)</label>
+    <input type="text" name="disease"
+           class="form-control"
+           placeholder="e.g. Diabetes">
+</div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    Check Interaction Risk
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

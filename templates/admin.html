@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5 admin-bg">
+
+```
+<h2 class="text-center text-primary mb-4 fw-bold">
+    🛡 SafeMeds Admin Dashboard
+</h2>
+
+<!-- ================= AI SYSTEM OVERVIEW ================= -->
+<h4 class="text-secondary mb-3">📊 AI System Overview</h4>
+
+<div class="row mb-4">
+
+    <div class="col-md-3">
+        <div class="card shadow border-0 text-center p-3">
+            <h6 class="text-muted">Model Accuracy</h6>
+            <h3 class="fw-bold text-success">
+                {{ stats.model_accuracy }}%
+            </h3>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow border-0 text-center p-3">
+            <h6 class="text-muted">Total Predictions</h6>
+            <h3 class="fw-bold text-primary">
+                {{ stats.total_predictions }}
+            </h3>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow border-0 text-center p-3">
+            <h6 class="text-muted">High Risk Cases</h6>
+            <h3 class="fw-bold text-danger">
+                {{ stats.high_risk }}
+            </h3>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow border-0 text-center p-3">
+            <h6 class="text-muted">Dataset Size</h6>
+            <h3 class="fw-bold text-dark">
+                {{ dataset_size }}
+            </h3>
+        </div>
+    </div>
+
+</div>
+
+<!-- ================= RISK DISTRIBUTION GRAPH ================= -->
+<div class="card p-4 shadow mb-4 border-0">
+    <h4 class="mb-3 text-secondary">📊 Risk Distribution Analysis</h4>
+    <hr>
+    <canvas id="riskChart" height="100"></canvas>
+</div>
+
+
+<!-- ================= MODEL COMPARISON ================= -->
+<div class="card p-4 shadow mb-4 border-0">
+    <h4 class="mb-3 text-secondary">🤖 Model Comparison</h4>
+    <hr>
+
+    <table class="table table-bordered text-center">
+        <thead class="table-light">
+            <tr>
+                <th>Model</th>
+                <th>Accuracy</th>
+                <th>Harmful Recall</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Logistic Regression</td>
+                <td>76%</td>
+                <td>60%</td>
+            </tr>
+            <tr>
+                <td>XGBoost</td>
+                <td>72%</td>
+                <td>55%</td>
+            </tr>
+            <tr>
+                <td>LightGBM</td>
+                <td>78%</td>
+                <td>63%</td>
+            </tr>
+            <tr class="table-success">
+                <td><strong>CatBoost (Production Model)</strong></td>
+                <td><strong>86%</strong></td>
+                <td><strong>Highest</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p class="mt-3 text-muted">
+        CatBoost was selected as the final deployed model due to its superior 
+        accuracy and better detection of harmful drug interactions.
+    </p>
+</div>
+
+<!-- ================= DATASET INFORMATION ================= -->
+<div class="card p-4 shadow mb-4 border-0">
+    <h4 class="mb-3 text-secondary">🗄 Dataset Information</h4>
+    <hr>
+
+    <p><strong>Total Records:</strong> {{ dataset_size }}</p>
+    <p><strong>Data Source:</strong> Drug Interaction Dataset</p>
+</div>
+
+<!-- ================= MODEL MANAGEMENT ================= -->
+<div class="card p-4 shadow border-0">
+    <h4 class="mb-3 text-secondary">⚙ Model Management</h4>
+    <hr>
+
+    <p><strong>Last Retrained:</strong> Recently Updated</p>
+
+    <a href="{{ url_for('retrain_model') }}" class="btn btn-danger mt-2">
+        🔄 Retrain Model
+    </a>
+</div>
+
+
+
+<h4 class="mt-5 text-secondary">📜 Prediction History</h4>
+
+<table class="table table-striped">
+
+<thead>
+<tr>
+<th>User</th>
+<th>Drug 1</th>
+<th>Drug 2</th>
+<th>Risk</th>
+<th>Time</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for p in recent_predictions %}
+
+<tr>
+<td>{{ p.user }}</td>
+<td>{{ p.drug_a }}</td>
+<td>{{ p.drug_b }}</td>
+<td>{{ p.prediction }}</td>
+<td>{{ p.time }}</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+</div>
+<!-- ================= CHART.JS ================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const chartData = [
+        {{ stats.high_risk }},
+        {{ stats.moderate_risk }},
+        {{ stats.low_risk }}
+    ];
+
+    const ctx = document.getElementById('riskChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['High Risk', 'Moderate Risk', 'Low Risk'],
+            datasets: [{
+                label: 'Number of Cases',
+                data: chartData,
+                backgroundColor: [
+                    '#ff4d4f',
+                    '#faad14',
+                    '#52c41a'
+                ],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+});
+</script>
+<style>
+
+body{
+background-image: url("{{ url_for('static', filename='images/image2.jpeg') }}");
+background-size: cover;
+background-position: center;
+background-attachment: fixed;
+}
+
+.admin-bg{
+background: rgba(255,255,255,0.9);
+padding: 30px;
+border-radius: 12px;
+}
+
+</style>
+
+
+<style>
+
+/* Background image */
+body{
+background-image: url("{{ url_for('static', filename='images/image2.jpeg') }}");
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+background-attachment: fixed;
+}
+
+/* Main container glass effect */
+.container{
+background: rgba(255,255,255,0.6);
+backdrop-filter: blur(10px);
+padding:40px;
+border-radius:15px;
+}
+
+/* Cards transparent */
+.card{
+background: rgba(255,255,255,0.65);
+backdrop-filter: blur(6px);
+border-radius:12px;
+}
+
+</style>
+
+
+{% endblock %}
+

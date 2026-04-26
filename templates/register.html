@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="vh-100 d-flex align-items-center justify-content-center register-bg">
+
+<div class="card register-card shadow p-4" style="width:400px;">
+
+<h3 class="text-center mb-4 text-success">Create Account</h3>
+
+<form method="POST">
+
+<div class="mb-3">
+<label class="form-label">Username</label>
+<input type="text" name="username" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label class="form-label">Email</label>
+<input type="email" name="email" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label class="form-label">Password</label>
+<input type="password" name="password" class="form-control" required>
+</div>
+
+<button type="submit" class="btn btn-success w-100">Register</button>
+
+</form>
+
+<p class="text-center mt-3">
+Already have an account?
+<a href="{{ url_for('login') }}">Login</a>
+</p>
+
+</div>
+
+</section>
+
+<style>
+
+.register-bg{
+background-image: url("{{ url_for('static', filename='images/image3.jpeg') }}");
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+}
+
+.register-card{
+background: rgba(255,255,255,0.9);
+border-radius:15px;
+}
+
+</style>
+
+{% endblock %}
